@@ -1,13 +1,5 @@
-import os
-import pandas as pd
-import torch
 import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, models
-from PIL import Image
-from tqdm import tqdm
-import ast
 
 # ==========================================
 # 3. MODEL ARCHITECTURE
