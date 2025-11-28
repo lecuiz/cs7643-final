@@ -58,6 +58,10 @@ linked['tokens_encoded'] = linked['tokens_encoded'].apply(ast.literal_eval)
 # Save for future use
 linked.to_pickle(PKL_PATH)
 
+# save mini dataset for testing
+MINI_PKL_PATH = f"{ROOT}/processed_artemis/artemis_image_caption_dataset_mini.pkl"
+linked.sample(100).to_pickle(MINI_PKL_PATH)
+
 print("Saved to:", PKL_PATH)
 
 linked = pd.read_pickle(PKL_PATH)

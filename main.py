@@ -1,7 +1,10 @@
-from final_project.src.rnn import ImageCaptioningModel as rnn_model
 from final_project.src.train import train
 from final_project.src.utils import Config, ArtemisDataset
-from torchvision import transforms, models
+from torchvision import transforms
+from final_project.src.decoders_w_attention.decoder_rnn import ImageCaptioningModel as rnn_model
+from final_project.src.decoders_w_attention.decoder_lstm import ImageCaptioningModel as lstm_model
+from final_project.src.decoders_w_attention.decoder_transformer import ImageCaptioningModel as transformer_model
+from final_project.src.decoders.decoder_rnn import ImageCaptioningModel as vanilla_rnn_model
 
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
@@ -10,15 +13,30 @@ transform = transforms.Compose([
                          (0.229, 0.224, 0.225))
 ])
 
-dataset = ArtemisDataset(Config.PICKLE_PATH, transform=transform, split='train')
-dataset.df = dataset.df.sample(1000)
+dataset = ArtemisDataset(Config.MINI_PICKLE_PATH, transform=transform, split='train')
 
-model = rnn_model(
+# model = rnn_model(
+#     vocab_size=dataset.vocab_size,
+#     embed_dim=Config.EMBED_DIM,
+#     hidden_dim=Config.HIDDEN_DIM,
+#     dropout=Config.DROPOUT
+# )
+
+# model = transformer_model(
+#     vocab_size=dataset.vocab_size,
+#     embed_dim=Config.EMBED_DIM,
+#     hidden_dim=Config.HIDDEN_DIM,
+#     num_layers=Config.NUM_LAYERS,
+#     num_heads=Config.NUM_HEADS,
+#     dropout=Config.DROPOUT
+# )
+
+model = vanilla_rnn_model(
     vocab_size=dataset.vocab_size,
     embed_dim=Config.EMBED_DIM,
     hidden_dim=Config.HIDDEN_DIM,
-    # num_layers=Config.NUM_LAYERS,
     dropout=Config.DROPOUT
 )
+
 
 train(model=model, dataset=dataset)

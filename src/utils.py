@@ -14,6 +14,7 @@ class Config:
     # Colab Paths matching your structure
     ROOT_DIR = "/Users/alexis/Desktop/Desktop/OMSCS/Fall2025/CS7643/final_project"
     PICKLE_PATH = os.path.join(ROOT_DIR, "processed_artemis/artemis_image_caption_dataset.pkl")
+    MINI_PICKLE_PATH = os.path.join(ROOT_DIR, "processed_artemis/artemis_image_caption_dataset_mini.pkl")
 
     # Model Hyperparameters
     EMBED_DIM = 512
