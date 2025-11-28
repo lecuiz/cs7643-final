@@ -1,4 +1,4 @@
-from final_project.src.train import train
+from final_project.src.train import train, test
 from final_project.src.utils import Config, ArtemisDataset
 from torchvision import transforms
 from final_project.src.decoders_w_attention.decoder_rnn import ImageCaptioningModel as rnn_model
@@ -40,3 +40,4 @@ model = vanilla_rnn_model(
 
 
 train(model=model, dataset=dataset)
+test(model=model, dataset=dataset)
