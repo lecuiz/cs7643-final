@@ -1,29 +1,7 @@
 import torch
 import torch.nn as nn
 from final_project.src.encoders.encoder_cnn import EncoderCNN
-
-
-class AttentionModule(nn.Module):
-    """
-    Simple Attention implementation from https://github.com/AaronCCWong/Show-Attend-and-Tell/blob/master/attention.py
-    """
-
-    def __init__(self, encoder_dim):
-        super(AttentionModule, self).__init__()
-        self.U = nn.Linear(512, 512)
-        self.W = nn.Linear(encoder_dim, 512)
-        self.v = nn.Linear(512, 1)
-        self.tanh = nn.Tanh()
-        self.softmax = nn.Softmax(1)
-
-    def forward(self, img_features, hidden_state):
-        U_h = self.U(hidden_state.swapaxes(0, 1))
-        W_s = self.W(img_features)
-        att = self.tanh(W_s + U_h)
-        e = self.v(att).squeeze(2)
-        alpha = self.softmax(e)
-        context = (img_features * alpha.unsqueeze(2)).sum(1)
-        return context
+from final_project.src.decoders_w_attention.attention import AttentionModule
 
 
 class DecoderLSTM(nn.Module):
