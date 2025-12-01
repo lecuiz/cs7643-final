@@ -15,7 +15,6 @@ class Config:
     ROOT_DIR = "/Users/alexis/Desktop/Desktop/OMSCS/Fall2025/CS7643/final_project"
     PICKLE_PATH = os.path.join(ROOT_DIR, "processed_artemis/artemis_image_caption_dataset.pkl")
     MINI_PICKLE_PATH = os.path.join(ROOT_DIR, "processed_artemis/artemis_image_caption_dataset_mini.pkl")
-    VOCAB_PATH = os.path.join(ROOT_DIR, "processed_artemis/vocabulary.pkl")
 
     # Model Hyperparameters
     EMBED_DIM = 512
@@ -31,8 +30,7 @@ class Config:
     DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
     # Vocabulary (Placeholder, overwritten by Dataset)
-
-    VOCAB_SIZE = len(pd.read_pickle(VOCAB_PATH))
+    VOCAB_SIZE = 30000
     PAD_IDX = 0
     SOS_IDX = 1  # Standard for Artemis (based on data inspection)
     EOS_IDX = 2  # Standard for Artemis (based on data inspection)

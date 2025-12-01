@@ -35,6 +35,7 @@ def train(model, dataset: ArtemisDataset | None):
     # Reduced num_workers to 0 to make debugging easier if errors persist
     dataloader = DataLoader(dataset, batch_size=Config.BATCH_SIZE, shuffle=True, num_workers=0)
 
+    print(f"Initializing Model with Vocab Size: {dataset.vocab_size}")
     optimizer = optim.Adam(model.parameters(), lr=Config.LEARNING_RATE)
     criterion = nn.CrossEntropyLoss(ignore_index=Config.PAD_IDX)
 
@@ -62,7 +63,7 @@ def train(model, dataset: ArtemisDataset | None):
 
             outputs = model(images, decoder_input)
 
-            loss = criterion(outputs.reshape(-1, Config.VOCAB_SIZE), targets.reshape(-1))
+            loss = criterion(outputs.reshape(-1, dataset.vocab_size), targets.reshape(-1))
 
             loss.backward()
             optimizer.step()
@@ -75,15 +76,13 @@ def train(model, dataset: ArtemisDataset | None):
     ax.plot(epochs, train_loss)
     ax.set_xlabel("Epochs")
     ax.set_ylabel("Loss")
-    ax.set_title(f"Learning Curve for: {model_name}")
+    ax.set_title('Learning Curve for: f{}')
     fig_path = os.path.join(Config.ROOT_DIR, f"{model_name}_learning_curve.png")
     fig.savefig(fig_path)
 
     save_path = os.path.join(Config.ROOT_DIR, "artemis_captioner_resnet_transformer.pth")
     torch.save(model.state_dict(), save_path)
     print(f"Model saved to {save_path}")
-    print(f"Train loss: {np.mean(train_loss)}")
-
 
 
 def test(model, dataset: ArtemisDataset):

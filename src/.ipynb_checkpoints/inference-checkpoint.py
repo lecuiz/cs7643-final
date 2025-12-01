@@ -1,6 +1,4 @@
 import random
-
-import pandas as pd
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
 from PIL import Image
@@ -169,7 +167,7 @@ def generate_caption_beam_search(model, image_path, vocab_size, idx_to_word=None
         return f"Indices: {best_seq}"
 
 
-def run_inference(model=None, dataset=None, use_pregen_vocab=True):
+def run_inference(model=None, dataset=None):
     # 1. Setup
     if not model:
         model_path = os.path.join(Config.ROOT_DIR, "artemis_captioner_resnet_transformer.pth")
@@ -180,16 +178,12 @@ def run_inference(model=None, dataset=None, use_pregen_vocab=True):
             return
 
     # 2. Load Dataset
-    # if not dataset:
-    dataset = ArtemisDataset(Config.PICKLE_PATH, split='train')
+    if not dataset:
+        dataset = ArtemisDataset(Config.PICKLE_PATH, split='train')
+    vocab_size = dataset.vocab_size
 
     # Rebuild vocab map
-    if use_pregen_vocab:
-        idx_to_word = pd.read_pickle(Config.VOCAB_PATH)
-        vocab_size = len(idx_to_word)
-    else:
-        idx_to_word = rebuild_vocab_mapping(dataset)
-        vocab_size = dataset.vocab_size
+    idx_to_word = rebuild_vocab_mapping(dataset)
 
     for i in range(5):
         # 4. Generate for a random image
